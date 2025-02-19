@@ -1,0 +1,16 @@
+#addForm {
+  margin: 5px 0 40px 0;
+}
+.formName {
+  padding: 10px 0;
+}
+.formDate {
+  padding: 10px 0;
+}
+.formButton {
+  margin-top: 10px;
+  padding: 5px 15px;
+}
+#addForm input {
+  padding: 3px;
+}

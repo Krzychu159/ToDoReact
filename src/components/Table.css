@@ -1,0 +1,25 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+table button {
+  padding: 3px 10px;
+  margin: 2px 5px;
+}
+
+th,
+td {
+  padding: 8px 20px;
+  text-align: center;
+}
+
+th {
+  width: 25%;
+}
+
+th.operations,
+td.operations {
+  width: 40%; /* ✅ Teraz ta kolumna zajmuje 2x więcej miejsca */
+  min-width: 200px; /* Możemy dodać minimalną szerokość */
+}

@@ -5,16 +5,16 @@ import { Table } from "./components/Table";
 
 function App() {
   const initailTasks = [
-    { name: "Pranie", date: "2025-02-02" },
-    { name: "Sprzątanie", date: "2025-02-02" },
-    { name: "Prasowanie", date: "2025-02-02" },
+    { name: "Pranie", date: "2025-02-02", done: false },
+    { name: "Sprzątanie", date: "2025-02-02", done: false },
+    { name: "Prasowanie", date: "2025-02-02", done: true },
   ];
 
   const [tasks, setTasks] = useState(initailTasks);
 
   const addTask = (data) => {
-    const newTasks = [...tasks, data];
-    setTasks(newTasks);
+    const newTask = { ...data, done: false }; // automatycznie na done false
+    setTasks([...tasks, newTask]);
   };
 
   const removeTask = (indexToRemove) => {
@@ -22,12 +22,24 @@ function App() {
     setTasks(updatedTasks);
   };
 
+  const toggleTask = (indexToToggle) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task, index) =>
+        index === indexToToggle ? { ...task, done: !task.done } : task
+      )
+    );
+  };
+
   return (
-    <>
+    <section>
       <h1>ToDo List</h1>
       <Form onAddTask={addTask} />
-      <Table tasks={tasks} onRemoveTask={removeTask} />
-    </>
+      <Table
+        tasks={tasks}
+        onRemoveTask={removeTask}
+        onToggleTask={toggleTask}
+      />
+    </section>
   );
 }
 
