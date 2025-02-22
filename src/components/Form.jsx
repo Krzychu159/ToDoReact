@@ -1,28 +1,45 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Form.css";
 
-export const Form = ({ onAddTask }) => {
+export const Form = ({
+  onAddTask,
+  isEditing,
+  setIsEditing,
+  editedTaskIndex,
+  setEditedTaskIndex,
+  tasks,
+}) => {
   const today = new Date().toISOString().split("T")[0];
   const [name, setName] = useState("");
   const [date, setDate] = useState(today);
+
+  useEffect(() => {
+    if (isEditing && editedTaskIndex !== null) {
+      setName(tasks[editedTaskIndex].name);
+      setDate(tasks[editedTaskIndex].date);
+    }
+  }, [isEditing, editedTaskIndex]);
+
   return (
     <div id="addForm">
-      <h2>Dodaj zadanie</h2>
+      <h2>{isEditing ? "Edytuj zadanie" : "Dodaj zadanie"}</h2>{" "}
+      {/* 🔹 Dynamiczny nagłówek */}
       <form
         onSubmit={(e) => {
           e.preventDefault();
           onAddTask({ name, date });
           setDate(today);
+          setName(""); // 🔹 Czyścimy nazwę zadania
+          setIsEditing(false);
+          setEditedTaskIndex(null); // 🔹 Resetujemy `editedTaskIndex`
         }}
       >
         <div className="formName">
           <label htmlFor="name">Nazwa zadania: </label>
           <input
-            defaultValue={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             type="text"
             name="name"
             id="name"
@@ -32,16 +49,14 @@ export const Form = ({ onAddTask }) => {
           <label htmlFor="date">Data dodania: </label>
           <input
             value={date}
-            onChange={(e) => {
-              setDate(e.target.value);
-            }}
+            onChange={(e) => setDate(e.target.value)}
             type="date"
             name="date"
             id="date"
-          />{" "}
+          />
         </div>
         <button className="formButton" disabled={name.length === 0}>
-          Dodaj
+          {isEditing ? "Zapisz" : "Dodaj"}
         </button>
       </form>
     </div>

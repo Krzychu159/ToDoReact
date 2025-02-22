@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
 import "./Table.css";
 
-export function Table({ tasks, onRemoveTask, onToggleTask }) {
+export function Table({
+  tasks,
+  onToggleTask,
+  setIsEditing,
+  setEditedTaskIndex,
+}) {
   return (
     <div className="table-container">
       <table>
@@ -10,8 +15,7 @@ export function Table({ tasks, onRemoveTask, onToggleTask }) {
             <th>Wykonane</th>
             <th>Nazwa</th>
             <th>Data</th>
-            <th className="operations">Operacje</th>{" "}
-            {/* ✅ Dodajemy `className` */}
+            <th className="operations">Operacje</th>
           </tr>
         </thead>
         <tbody>
@@ -40,10 +44,16 @@ export function Table({ tasks, onRemoveTask, onToggleTask }) {
                 {task.date}
               </td>
               <td className="operations">
-                {" "}
-                {/* ✅ Dodajemy `className` */}
-                <button onClick={() => onRemoveTask(index)}>Usuń</button>
-                <button>Edytuj</button>
+                <button
+                  onClick={() => {
+                    setIsEditing(true);
+                    setEditedTaskIndex(index); // 🔹 Przechowujemy indeks edytowanego zadania
+                  }}
+                >
+                  Edytuj
+                </button>
+
+                {/* 🔹 Zmiana `h2` */}
               </td>
             </tr>
           ))}

@@ -4,22 +4,31 @@ import { Form } from "./components/Form";
 import { Table } from "./components/Table";
 
 function App() {
-  const initailTasks = [
+  const initialTasks = [
     { name: "Pranie", date: "2025-02-02", done: false },
     { name: "Sprzątanie", date: "2025-02-02", done: false },
     { name: "Prasowanie", date: "2025-02-02", done: true },
   ];
 
-  const [tasks, setTasks] = useState(initailTasks);
+  const [tasks, setTasks] = useState(initialTasks);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTaskIndex, setEditedTaskIndex] = useState(null);
 
   const addTask = (data) => {
-    const newTask = { ...data, done: false }; // automatycznie na done false
-    setTasks([...tasks, newTask]);
-  };
+    if (isEditing === false) {
+      const newTask = { ...data, done: false };
+      setTasks([...tasks, newTask]);
+    } else {
+      // 🔹 Aktualizacja istniejącego zadania
+      setTasks((prevTasks) =>
+        prevTasks.map((task, index) =>
+          index === editedTaskIndex ? { ...task, ...data } : task
+        )
+      );
 
-  const removeTask = (indexToRemove) => {
-    const updatedTasks = tasks.filter((_, index) => index !== indexToRemove);
-    setTasks(updatedTasks);
+      setIsEditing(false); // 🔹 Po edycji wracamy do trybu dodawania
+      setEditedTaskIndex(null); // 🔹 Resetujemy indeks edytowanego zadania
+    }
   };
 
   const toggleTask = (indexToToggle) => {
@@ -33,12 +42,20 @@ function App() {
   return (
     <section>
       <h1>ToDo List</h1>
-      <Form onAddTask={addTask} />
+      <Form
+        onAddTask={addTask}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        editedTaskIndex={editedTaskIndex}
+        setEditedTaskIndex={setEditedTaskIndex}
+        tasks={tasks}
+      />
       <Table
         tasks={tasks}
-        onRemoveTask={removeTask}
         onToggleTask={toggleTask}
-      />
+        setIsEditing={setIsEditing}
+        setEditedTaskIndex={setEditedTaskIndex}
+      />{" "}
     </section>
   );
 }
