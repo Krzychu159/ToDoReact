@@ -6,6 +6,7 @@ export function Table({
   onToggleTask,
   setIsEditing,
   setEditedTaskIndex,
+  onRemoveTask,
 }) {
   return (
     <div className="table-container">
@@ -33,27 +34,18 @@ export function Table({
               >
                 {task.name}
               </td>
-              <td
-                style={{
-                  color:
-                    new Date(task.date) < new Date("2024-01-01")
-                      ? "red"
-                      : "white",
-                }}
-              >
-                {task.date}
-              </td>
+              <td>{task.date}</td>
               <td className="operations">
                 <button
                   onClick={() => {
                     setIsEditing(true);
-                    setEditedTaskIndex(index); // 🔹 Przechowujemy indeks edytowanego zadania
+                    setEditedTaskIndex(index);
                   }}
                 >
                   Edytuj
                 </button>
-
-                {/* 🔹 Zmiana `h2` */}
+                <button onClick={() => onRemoveTask(index)}>Usuń</button>{" "}
+                {/* 🔹 Obsługa usuwania */}
               </td>
             </tr>
           ))}

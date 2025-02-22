@@ -39,6 +39,18 @@ function App() {
     );
   };
 
+  const removeTask = (indexToRemove) => {
+    setTasks((prevTasks) =>
+      prevTasks.filter((_, index) => index !== indexToRemove)
+    );
+
+    // 🔹 Jeśli usuwamy edytowane zadanie, resetujemy edycję
+    if (editedTaskIndex === indexToRemove) {
+      setIsEditing(false);
+      setEditedTaskIndex(null);
+    }
+  };
+
   return (
     <section>
       <h1>ToDo List</h1>
@@ -55,6 +67,7 @@ function App() {
         onToggleTask={toggleTask}
         setIsEditing={setIsEditing}
         setEditedTaskIndex={setEditedTaskIndex}
+        onRemoveTask={removeTask}
       />{" "}
     </section>
   );
