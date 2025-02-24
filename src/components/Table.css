@@ -23,3 +23,10 @@ td.operations {
   width: 40%; /* ✅ Teraz ta kolumna zajmuje 2x więcej miejsca */
   min-width: 200px; /* Możemy dodać minimalną szerokość */
 }
+.manage-table {
+  margin: 0 30px;
+  display: flex;
+}
+.manage-line {
+  padding-right: 6px;
+}

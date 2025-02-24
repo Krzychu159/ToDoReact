@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
 import "./Table.css";
 
 export function Table({
@@ -8,8 +9,43 @@ export function Table({
   setEditedTaskIndex,
   onRemoveTask,
 }) {
+  const [sortBy, setSortBy] = useState("Nazwa");
+
+  const sortedTasks = [...tasks].sort((a, b) => {
+    if (sortBy === "Nazwa") {
+      return a.name.localeCompare(b.name);
+    } else {
+      return new Date(a.date) - new Date(b.date);
+    }
+  });
+
   return (
     <div className="table-container">
+      <div className="manage-table">
+        <div className="manage-line">
+          <label htmlFor="sort">Sortuj: </label>
+          <select
+            name="sort"
+            id="sort"
+            onChange={(e) => setSortBy(e.target.value)}
+          >
+            <option value="Nazwa">Nazwa</option>
+            <option value="Data">Data</option>
+          </select>
+        </div>
+        <div className="manage-line">
+          <label htmlFor="filter-date">Filtruj po dacie: </label>
+          <input type="date" id="filter-date" />
+        </div>
+        <div className="manage-line">
+          <label>Filtruj wykonane: </label>
+          <select name="isDone" id="isDone">
+            <option value="all">Wszystkie</option>
+            <option value="done">Zrobione</option>
+            <option value="toDo">Do zrobienia</option>
+          </select>
+        </div>
+      </div>
       <table>
         <thead>
           <tr>
@@ -20,7 +56,7 @@ export function Table({
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task, index) => (
+          {sortedTasks.map((task, index) => (
             <tr key={index}>
               <td>
                 <input
