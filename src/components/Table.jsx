@@ -10,12 +10,42 @@ export function Table({
   onRemoveTask,
 }) {
   const [sortBy, setSortBy] = useState("Nazwa");
+  const [doneFilter, setDoneFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("");
 
   const sortedTasks = [...tasks].sort((a, b) => {
     if (sortBy === "Nazwa") {
       return a.name.localeCompare(b.name);
     } else {
       return new Date(a.date) - new Date(b.date);
+    }
+  });
+
+  const filteredByDoneTasks = [...sortedTasks].filter((element) => {
+    if (doneFilter === "all") {
+      return true;
+    } else if (doneFilter === "done") {
+      if (element.done === true) {
+        return element;
+      } else {
+        return false;
+      }
+    } else {
+      if (element.done === false) {
+        return element;
+      } else {
+        return false;
+      }
+    }
+  });
+
+  const filteredFinalTasks = [...filteredByDoneTasks].filter((element) => {
+    if (dateFilter === "") {
+      return element;
+    } else if (dateFilter === element.date) {
+      return element;
+    } else {
+      return false;
     }
   });
 
@@ -34,16 +64,24 @@ export function Table({
           </select>
         </div>
         <div className="manage-line">
-          <label htmlFor="filter-date">Filtruj po dacie: </label>
-          <input type="date" id="filter-date" />
-        </div>
-        <div className="manage-line">
           <label>Filtruj wykonane: </label>
-          <select name="isDone" id="isDone">
+          <select
+            name="isDone"
+            id="isDone"
+            onChange={(e) => setDoneFilter(e.target.value)}
+          >
             <option value="all">Wszystkie</option>
             <option value="done">Zrobione</option>
             <option value="toDo">Do zrobienia</option>
           </select>
+        </div>
+        <div className="manage-line">
+          <label htmlFor="filter-date">Filtruj po dacie: </label>
+          <input
+            type="date"
+            id="filter-date"
+            onChange={(e) => setDateFilter(e.target.value)}
+          />
         </div>
       </div>
       <table>
@@ -56,7 +94,7 @@ export function Table({
           </tr>
         </thead>
         <tbody>
-          {sortedTasks.map((task, index) => (
+          {filteredFinalTasks.map((task, index) => (
             <tr key={index}>
               <td>
                 <input

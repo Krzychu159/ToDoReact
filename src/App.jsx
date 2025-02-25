@@ -7,7 +7,7 @@ function App() {
   const initialTasks = [
     { name: "Pranie", date: "2025-02-02", done: false },
     { name: "Sprzątanie", date: "2025-02-02", done: false },
-    { name: "Prasowanie", date: "2025-02-02", done: true },
+    { name: "Prasowanie", date: "2025-02-04", done: true },
   ];
 
   const [tasks, setTasks] = useState(initialTasks);
