@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import "./Table.css";
+import { Filters } from "./Filters"; // ✅ Import nowego komponentu
 
 export function Table({
   tasks,
@@ -14,76 +15,27 @@ export function Table({
   const [dateFilter, setDateFilter] = useState("");
 
   const sortedTasks = [...tasks].sort((a, b) => {
-    if (sortBy === "Nazwa") {
-      return a.name.localeCompare(b.name);
-    } else {
-      return new Date(a.date) - new Date(b.date);
-    }
+    if (sortBy === "Nazwa") return a.name.localeCompare(b.name);
+    return new Date(a.date) - new Date(b.date);
   });
 
-  const filteredByDoneTasks = [...sortedTasks].filter((element) => {
-    if (doneFilter === "all") {
-      return true;
-    } else if (doneFilter === "done") {
-      if (element.done === true) {
-        return element;
-      } else {
-        return false;
-      }
-    } else {
-      if (element.done === false) {
-        return element;
-      } else {
-        return false;
-      }
-    }
+  const filteredByDoneTasks = sortedTasks.filter((task) => {
+    if (doneFilter === "all") return true;
+    return doneFilter === "done" ? task.done : !task.done;
   });
 
-  const filteredFinalTasks = [...filteredByDoneTasks].filter((element) => {
-    if (dateFilter === "") {
-      return element;
-    } else if (dateFilter === element.date) {
-      return element;
-    } else {
-      return false;
-    }
+  const filteredFinalTasks = filteredByDoneTasks.filter((task) => {
+    if (dateFilter === "") return true;
+    return task.date === dateFilter;
   });
 
   return (
     <div className="table-container">
-      <div className="manage-table">
-        <div className="manage-line">
-          <label htmlFor="sort">Sortuj: </label>
-          <select
-            name="sort"
-            id="sort"
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="Nazwa">Nazwa</option>
-            <option value="Data">Data</option>
-          </select>
-        </div>
-        <div className="manage-line">
-          <label>Filtruj wykonane: </label>
-          <select
-            name="isDone"
-            id="isDone"
-            onChange={(e) => setDoneFilter(e.target.value)}
-          >
-            <option value="all">Wszystkie</option>
-            <option value="done">Zrobione</option>
-            <option value="toDo">Do zrobienia</option>
-          </select>
-        </div>
-        <div className="manage-line">
-          <label htmlFor="filter-date">Filtruj po dacie: </label>
-          <input
-            type="date"
-            id="filter-date"
-            onChange={(e) => setDateFilter(e.target.value)}
-          />
-        </div>
-      </div>
+      <Filters
+        setSortBy={setSortBy}
+        setDoneFilter={setDoneFilter}
+        setDateFilter={setDateFilter}
+      />
       <table>
         <thead>
           <tr>
@@ -96,7 +48,7 @@ export function Table({
         <tbody>
           {filteredFinalTasks.map((task) => {
             const realIndex = tasks.findIndex(
-              (t) => t.name === task.name && t.date === task.date // dodajemy chwilowe id oparte na name i date, to taka prowizorka jest
+              (t) => t.name === task.name && t.date === task.date
             );
 
             return (
@@ -120,13 +72,12 @@ export function Table({
                   <button
                     onClick={() => {
                       setIsEditing(true);
-                      setEditedTaskIndex(realIndex); // ✅ Teraz edytujemy właściwy indeks
+                      setEditedTaskIndex(realIndex);
                     }}
                   >
                     Edytuj
                   </button>
-                  <button onClick={() => onRemoveTask(realIndex)}>Usuń</button>{" "}
-                  {/* ✅ Usuwamy poprawny indeks */}
+                  <button onClick={() => onRemoveTask(realIndex)}>Usuń</button>
                 </td>
               </tr>
             );

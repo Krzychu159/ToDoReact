@@ -16,10 +16,10 @@ export const Form = ({
 
   useEffect(() => {
     if (isEditing && editedTaskIndex !== null) {
-      setName(tasks[editedTaskIndex].name);
-      setDate(tasks[editedTaskIndex].date);
+      setName(tasks[editedTaskIndex]?.name || "");
+      setDate(tasks[editedTaskIndex]?.date || today);
     }
-  }, [isEditing, editedTaskIndex]);
+  }, [isEditing, editedTaskIndex, tasks, today]);
 
   return (
     <div id="addForm">
