@@ -94,35 +94,43 @@ export function Table({
           </tr>
         </thead>
         <tbody>
-          {filteredFinalTasks.map((task, index) => (
-            <tr key={index}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={task.done}
-                  onChange={() => onToggleTask(index)}
-                />
-              </td>
-              <td
-                style={{ textDecoration: task.done ? "line-through" : "none" }}
-              >
-                {task.name}
-              </td>
-              <td>{task.date}</td>
-              <td className="operations">
-                <button
-                  onClick={() => {
-                    setIsEditing(true);
-                    setEditedTaskIndex(index);
+          {filteredFinalTasks.map((task) => {
+            const realIndex = tasks.findIndex(
+              (t) => t.name === task.name && t.date === task.date // dodajemy chwilowe id oparte na name i date, to taka prowizorka jest
+            );
+
+            return (
+              <tr key={`${task.name}-${task.date}`}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={task.done}
+                    onChange={() => onToggleTask(realIndex)}
+                  />
+                </td>
+                <td
+                  style={{
+                    textDecoration: task.done ? "line-through" : "none",
                   }}
                 >
-                  Edytuj
-                </button>
-                <button onClick={() => onRemoveTask(index)}>Usuń</button>{" "}
-                {/* 🔹 Obsługa usuwania */}
-              </td>
-            </tr>
-          ))}
+                  {task.name}
+                </td>
+                <td>{task.date}</td>
+                <td className="operations">
+                  <button
+                    onClick={() => {
+                      setIsEditing(true);
+                      setEditedTaskIndex(realIndex); // ✅ Teraz edytujemy właściwy indeks
+                    }}
+                  >
+                    Edytuj
+                  </button>
+                  <button onClick={() => onRemoveTask(realIndex)}>Usuń</button>{" "}
+                  {/* ✅ Usuwamy poprawny indeks */}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
