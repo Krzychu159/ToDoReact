@@ -1,5 +1,6 @@
 #addForm {
   margin: 5px 0 40px 0;
+  width: 100%;
 }
 .formName {
   padding: 10px 0;
@@ -13,4 +14,16 @@
 }
 #addForm input {
   padding: 3px;
+}
+form {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+@media (max-width: 600px) {
+  form {
+    flex-direction: column;
+    align-items: center;
+  }
 }

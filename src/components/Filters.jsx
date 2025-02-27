@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import "./Filters.css";
 
 export function Filters({ setSortBy, setDoneFilter, setDateFilter }) {
   return (
