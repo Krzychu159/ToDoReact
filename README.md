@@ -5,7 +5,7 @@
 - ✔️ Add, edit, and delete tasks  
 - ✔️ Mark tasks as completed  
 - ✔️ Sort and filter by name, date, and status  
-- ✔️ Intuitive and responsive UI  
+- ✔️ Simple responsive UI  
 
 🔗 **Live demo:** [To-Do React App](https://to-do-react-chi-tan.vercel.app/)  
 
